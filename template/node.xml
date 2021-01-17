@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="width: 160px;height: 26px;">
+    <rect class="node-svg" x="5" width="150" height="26"
+          style="fill:#fff;stroke-width:0;stroke:rgb(0,0,0);cursor: pointer;margin-left: 10px;"/>
+    <text x="40" y="20">svg测试card</text>
+    <circle class="point-in" cx="155" cy="14" r="3"
+            style="fill: white;stroke: grey;stroke-width: 1;display: none;"/>
+    <circle class="point-out" cx="5" cy="14" r="3"
+            style="fill: white;stroke: grey;stroke-width: 1;display: none;"/>
+</svg>

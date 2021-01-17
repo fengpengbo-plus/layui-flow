@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./layui/css/layui.css">
+    <style>
+        .node {
+            /*position: absolute;*/
+            /*z-index: 9999;*/
+        }
+        .node-card {
+            cursor: pointer;
+            text-align: center;
+            z-index: 9999;
+            position: absolute;
+            width: 150px;
+        }
+        .node-card .layui-card-body {
+            padding: 1px 1px;
+        }
+        .node-operation {
+            margin-left: 155px;
+            line-height: 26px;
+            color: grey;
+            z-index: 99999;
+            cursor: pointer;
+            display: none;
+        }
+        .node:hover .node-operation {
+            display: block;
+        }
+        .layui-table tbody tr {
+            background-color: #f2f2f2;
+        }
+        .layui-table tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+        .node-svg {
+            fill:#fff;stroke-width:0;stroke:rgb(0,0,0);cursor: pointer;margin-left: 10px;
+        }
+        svg text:hover {
+            cursor: pointer;
+        }
+        .point-in,.point-out {
+            fill: white;stroke: grey;stroke-width: 1;display: none;
+        }
+        .point-in,.point-out:hover {
+            cursor: move;
+        }
+    </style>
+</head>
+<body style="background-color: #f2f2f2">
+    <div class="layui-container">
+        <div class="layui-card">
+            <div class="layui-card-header">卡片面板</div>
+            <div class="layui-card-body">
+                <table lay-filter="demo"></table>
+            </div>
+            <script type="text/html" id="canvas">
+                <canvas id="back-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                </canvas>
+            </script>
+        </div>
+    </div>
+    <script type="text/html">
+        <div class="node">
+            <div class="layui-card node-card">
+                <div class="layui-card-body">
+                    测试card
+                </div>
+            </div>
+            <i class="layui-icon layui-icon-add-circle node-operation"></i>
+        </div>
+    </script>
+    <div style="margin-top: 40px">
+        <canvas id="node-canvas" style="position: absolute;border: 1px solid grey"></canvas>
+    </div>
+    <script type="text/html">
+        <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgc3R5bGU9IndpZHRoOiAxNjBweDtoZWlnaHQ6IDI2cHg7Ij4KICAgICAgICA8cmVjdCBjbGFzcz0ibm9kZS1zdmciIHg9IjUiIHdpZHRoPSIxNTAiIGhlaWdodD0iMjYiCiAgICAgICAgICAgICAgICBzdHlsZT0iZmlsbDojZmZmO3N0cm9rZS13aWR0aDowO3N0cm9rZTpyZ2IoMCwwLDApO2N1cnNvcjogcG9pbnRlcjttYXJnaW4tbGVmdDogMTBweDsiLz4KICAgICAgICA8dGV4dCB4PSI0MCIgeT0iMjAiPnN2Z+a1i+ivlWNhcmQ8L3RleHQ+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0icG9pbnQtaW4iIGN4PSIxNTUiIGN5PSIxNCIgcj0iMyIKICAgICAgICAgICAgICAgIHN0eWxlPSJmaWxsOiB3aGl0ZTtzdHJva2U6IGdyZXk7c3Ryb2tlLXdpZHRoOiAxO2Rpc3BsYXk6IG5vbmU7Ii8+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0icG9pbnQtb3V0IiBjeD0iNSIgY3k9IjE0IiByPSIzIgogICAgICAgICAgICAgICAgc3R5bGU9ImZpbGw6IHdoaXRlO3N0cm9rZTogZ3JleTtzdHJva2Utd2lkdGg6IDE7ZGlzcGxheTogbm9uZTsiLz4KPC9zdmc+Cgo=">
+    </script>
+</body>
+<script src="layui/layui.js"></script>
+<script>
+    layui.use(['layer', 'form', 'table','jquery'], function(){
+        let layer = layui.layer
+            ,form = layui.form
+            ,table = layui.table
+            ,$ = layui.jquery;
+        $(".node-svg").mouseenter(function(){
+            $(".point-in").show();
+            $(".point-out").show();
+        });
+        $(".node-svg").mouseleave(function(){
+            $(".point-in").hide();
+            $(".point-out").hide();
+        });
+        let data = [];
+        let points = [];
+        let cols = [
+            [
+                {field:"name1", title:"node", width: 200, templet: function(d) {
+                    let point = {name:d.name1, self:d.self, out: d.out, hasDraw: false}
+                    points.push(point);
+                    return "<div class='node'>"
+                        + "<div class=\"layui-card node-card\">"
+                        + "<div class=\"layui-card-body\">"
+                        + d.name1
+                        + "</div>"
+                        + "</div>"
+                        + "<i class=\"layui-icon layui-icon-add-circle node-operation\"></i>"
+                        + "</div>";
+                }}
+                ,{field:"name2", title:"node", width: 200, templet: function(d) {
+                    return "<div class=\"layui-card node-card\">"
+                        + "<div class=\"layui-card-body\">"
+                        + d.name2
+                        + "</div>"
+                        + "</div>";
+                }}
+                ,{field:"name3", title:"node", width: 200, templet: function(d) {
+                    return "<div class=\"layui-card node-card\">"
+                        + "<div class=\"layui-card-body\">"
+                        + d.name3
+                        + "</div>"
+                        + "</div>";
+                }}
+            ]
+        ];
+        let obj = {};
+        obj.name1 = "step1";
+        obj.name2 = "step2";
+        obj.name3 = "step3";
+        data.push(obj);
+
+        table.init('demo', {
+            id: "mytable"
+            ,data: data
+            ,cols: cols
+            ,done: function(res,curr,count) {
+                $("div[lay-id=mytable]").find(".layui-table-body").append($("#canvas").html());
+                let c = $("#back-canvas")[0];
+                let ctx=c.getContext("2d");
+                ctx.moveTo(0,0);
+                ctx.lineTo(200,100);
+                ctx.stroke();
+            }
+        });
+        let nodeCanvas = $("#node-canvas")[0];
+        let nc = nodeCanvas.getContext("2d");
+        let xml = new XMLSerializer().serializeToString(parseXML("template/node.xml"));
+        xml = encodeURIComponent(xml);
+        xml = unescape(xml);
+        xml = btoa(xml);
+        const img = new Image();
+        img.src = 'data:image/svg+xml;base64,' + xml;
+        img.onload = () => {
+            console.log(img.width, img.height)
+            nc.drawImage(
+                img,
+                0, 0, img.width, img.height
+            )
+        };
+
+
+        function parseXML(fileXmlName){
+            let xmlDoc;
+            if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            } else {// code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.open("GET",fileXmlName,false);
+            xmlhttp.send();
+            xmlDoc=xmlhttp.responseXML;
+            return xmlDoc;
+        }
+    });
+</script>
+</html>

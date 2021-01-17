@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./layui/css/layui.css">
+    <style>
+        .cc {
+            cursor: move;
+        }
+    </style>
+</head>
+<body>
+    <div id="main" style="width: 700px;height: 400px;background-color: #f2f2f2;"></div>
+</body>
+<script src="layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/modules/'
+    }).use(['layer', 'form', 'table','jquery','layFlow'], function() {
+        let layer = layui.layer
+            , form = layui.form
+            , table = layui.table
+            , $ = layui.jquery
+            , layFlow = layui.layFlow;
+
+        let data = [],edge = [];
+        let node1 = {
+            id: 1,
+            name: "node1",
+            level: 1,
+            index: 1
+        },node2 = {
+            id: 2,
+            name: "node2",
+            level: 2,
+            index: 1
+        },node3 = {
+            id: 3,
+            name: "node3",
+            level: 2,
+            index: 2
+        },node4 = {
+            id: 4,
+            name: "node4",
+            level: 3,
+            index: 2
+        };
+        data.push(node1);
+        data.push(node2);
+        data.push(node3);
+        data.push(node4);
+        let edge1 = {
+            name: "edge1",
+            startId: 1,
+            endId: 2
+        },edge2 = {
+            name: "edge2",
+            startId: 1,
+            endId: 3
+        },edge3  = {
+            name: "edge3",
+            startId: 3,
+            endId: 4
+        },edge4 = {
+            name: "edge4",
+            startId: 2,
+            endId: 4
+        };
+        edge.push(edge1);
+        edge.push(edge2);
+        edge.push(edge3);
+        edge.push(edge4);
+        layFlow.init("main");
+        layFlow.render(data,edge, function () {
+            layer.msg("node is click");
+        },function () {
+            layer.msg("edit is click");
+        });
+    })
+</script>
+</html>
