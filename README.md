@@ -3,3 +3,10 @@
 
 zRender文档 [https://ecomfe.github.io/zrender-doc/public/](https://ecomfe.github.io/zrender-doc/public/) 
 
+启动步骤：
+``` javascript
+npm install
+
+gulp webserver
+```
+浏览器访问：http://localhost:8787
