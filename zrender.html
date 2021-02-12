@@ -29,7 +29,7 @@
             id: 1,
             name: "node1",
             level: 1,
-            index: 1
+            index: 2
         },node2 = {
             id: 2,
             name: "node2",
@@ -45,11 +45,17 @@
             name: "node4",
             level: 3,
             index: 2
+        },node5 = {
+            id: 5,
+            name: "node5",
+            level: 2,
+            index: 3
         };
         data.push(node1);
         data.push(node2);
         data.push(node3);
         data.push(node4);
+        data.push(node5);
         let edge1 = {
             name: "edge1",
             startId: 1,
@@ -66,11 +72,21 @@
             name: "edge4",
             startId: 2,
             endId: 4
+        },edge5 = {
+            name: "edge5",
+            startId: 5,
+            endId: 4
+        },edge6 = {
+            name: "edge6",
+            startId: 1,
+            endId: 5
         };
         edge.push(edge1);
         edge.push(edge2);
         edge.push(edge3);
         edge.push(edge4);
+        edge.push(edge5);
+        edge.push(edge6);
         layFlow.init("main");
         layFlow.render(data,edge, function () {
             layer.msg("node is click");

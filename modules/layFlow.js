@@ -141,6 +141,14 @@ layui.define(['layer', 'form', 'table','jquery','zrender'],function(exports){
             style: {
                 fill: '#fff',
                 stroke: '#f2f2f2'
+            },
+            textContent: new zrender.Text({
+                style: {
+                    text: nodeData.name
+                }
+            }),
+            textConfig: {
+                position: 'inside'
             }
         }).on("click", function(event){
             if (typeof nodeClickCallback === 'function')
@@ -155,15 +163,8 @@ layui.define(['layer', 'form', 'table','jquery','zrender'],function(exports){
                 })
             }
         });
-        let text = new zrender.Text({
-            style: {
-                text: nodeData.name,
-                textPosition: 'inside'
-            }
-        });
         // nodes.push(edit);
         g.add(node);
-        g.add(text);
         nodes.push(node);
         return nodes;
     }
